@@ -1,27 +1,27 @@
 from flask import Flask
-import os
-import socket
+import psycopg2
+from flask import request
+from datetime import datetime
 
 app = Flask(__name__)
+conn = psycopg2.connect(dbname='database', user='postgres', 
+                        password='postgres', host='localhost')
+cur = conn.cursor()
+cur.execute("CREATE TABLE IF NOT EXISTS table_Counter (id serial PRIMARY KEY, updated_at timestamp default current_timestamp, client_info varchar);")
+
 
 @app.route("/")
 def hello():
-    with open('counter.txt', 'r') as f:
-        counter = int(f.readline())
-        return str(counter)
+    cur.execute("SELECT id from table_Counter ORDER BY id DESC LIMIT 1;")
+    res = cur.fetchall()
+    return {"id": res[0][0]}
     
-
 @app.route("/stat")
 def stat():
-    line = 0
+    header = request.headers.get('User-Agent')
+    cur.execute(f"INSERT INTO table_Counter (client_info, updated_at) VALUES ('{header}', '{datetime.now()}');")
+    return {'inserted': True}
 
-    with open('counter.txt', 'r+') as f:
-        line = f.readline()
-        f.seek(0)
-        counter = int(line)
-        stringCounter = str(counter + 1)
-        f.write(stringCounter)
-        return stringCounter
 
 @app.route("/about")
 def about():
