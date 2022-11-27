@@ -15,6 +15,7 @@ services:
 
   web:
     build: .
+    scale: 6
     ports:
       - "8000:5000"
     depends_on:
