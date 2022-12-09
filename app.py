@@ -5,7 +5,7 @@ from datetime import datetime
 
 app = Flask(__name__)
 conn = psycopg2.connect(dbname='database', user='postgres', 
-                        password='postgres', host='localhost')
+                        password='postgres', host='psql')
 cur = conn.cursor()
 cur.execute("CREATE TABLE IF NOT EXISTS table_Counter (id serial PRIMARY KEY, updated_at timestamp default current_timestamp, client_info varchar);")
 
@@ -27,5 +27,6 @@ def stat():
 def about():
     return "<h3> Hello, Alexander Yurev </h3>"
 
+
 if __name__ == "__main__":
-    app.run(host='0.0.0.0', port=80)
+    app.run(host='0.0.0.0', port=5000)
