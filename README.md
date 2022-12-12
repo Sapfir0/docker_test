@@ -6,3 +6,5 @@
 ## Start docker-compose
 
     docker-compose up --build
+
+Для деплоя на VDS нужно выполнить команду запуска docker-compose
