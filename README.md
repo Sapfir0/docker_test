@@ -8,3 +8,8 @@
     docker-compose up --build
 
 Для деплоя на VDS нужно выполнить команду запуска docker-compose
+
+
+## Scaling
+
+    docker-compose up --scale web=2
